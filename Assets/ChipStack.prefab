@@ -720,6 +720,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8184279726009952524}
+  - component: {fileID: 3789794606370695699}
   m_Layer: 0
   m_Name: ChipStack
   m_TagString: Untagged
@@ -751,6 +752,36 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3789794606370695699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8184279726009952531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9f3cc285dd83404381b7fff94804347, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  possibleColors:
+  - {r: 0.7075472, g: 0, b: 0, a: 1}
+  - {r: 0, g: 0, b: 0.735849, a: 1}
+  - {r: 0, g: 0.6132076, b: 0, a: 1}
+  - {r: 0.7169812, g: 0.7169812, b: 0, a: 1}
+  - {r: 0.7264151, g: 0, b: 0.7264151, a: 1}
+  - {r: 0, g: 0.7169812, b: 0.7169812, a: 1}
+  renderers:
+  - {fileID: 8184279725587280405}
+  - {fileID: 8184279725357745879}
+  - {fileID: 8184279724921871716}
+  - {fileID: 71039027429793866}
+  - {fileID: 6573487033539496085}
+  - {fileID: 2920177742915522369}
+  - {fileID: 1346334279118056761}
+  - {fileID: 1012282417887184178}
+  - {fileID: 1971379611543478733}
+  - {fileID: 3391411219529817398}
 --- !u!1 &8906669382624231639
 GameObject:
   m_ObjectHideFlags: 0

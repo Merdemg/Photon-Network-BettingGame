@@ -27,8 +27,10 @@ public class GameplayManager : MonoBehaviour
     //}
 
     //public event Action<GameState> OnGameStateChange;
+    public event Action<int> OnPlayerBet;
+
     public event Action<bool> OnNewSpin;
-    public event Action<bool, int> OnRoundEnd;
+    public event Action<bool, int, bool> OnRoundEnd;
 
 
     bool isCurrentRoundGreen;
@@ -56,6 +58,8 @@ public class GameplayManager : MonoBehaviour
         this.betAmount = betAmount;
         totalChips = leftChips;
 
+        OnPlayerBet?.Invoke(betAmount);
+
         numOfPlayersBetted++;
         object[] data = new object[] { betAmount, leftChips };
         PhotonNetwork.RaiseEvent(BET_MADE, data, Photon.Realtime.RaiseEventOptions.Default, ExitGames.Client.Photon.SendOptions.SendReliable);
@@ -80,13 +84,20 @@ public class GameplayManager : MonoBehaviour
 
     public void OnSpinOver() {
         bool isWin = false;
+        bool isToppingPlayerUp = false;
         if (isPlayerBetGreen == isCurrentRoundGreen) {
             isWin = true;
             totalChips += betAmount * 2; 
         }
-        numOfPlayersBetted = 0;
 
-        OnRoundEnd?.Invoke(isWin, totalChips);
+        if (totalChips == 0) {
+            totalChips = 100;
+            isToppingPlayerUp = true;
+        }
+
+
+        numOfPlayersBetted = 0;
+        OnRoundEnd?.Invoke(isWin, totalChips, isToppingPlayerUp);
     }
 
 

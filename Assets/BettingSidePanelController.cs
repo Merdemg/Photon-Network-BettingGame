@@ -21,11 +21,11 @@ public class BettingSidePanelController : MonoBehaviour
         GameplayManager.Instance.OnRoundEnd += OnRoundEnd;
     }
 
-    private void OnRoundEnd(bool isWin, int newTotalChips) {
-        if (newTotalChips == 0) { // Top player off
-            newTotalChips = 1000;
-        }
+    private void OnDestroy() {
+        GameplayManager.Instance.OnRoundEnd -= OnRoundEnd;
+    }
 
+    private void OnRoundEnd(bool isWin, int newTotalChips, bool isToppingPlayerUp) {
         UpdateUI(newTotalChips);
         betButton.interactable = true;
     }
@@ -36,11 +36,6 @@ public class BettingSidePanelController : MonoBehaviour
         betAmount = 10;
         betAmountText.text = betAmount.ToString();
     }
-
-    public void ResetUI() {
-
-    }
-
 
     public void OnIncreaseBet() {
         if (betAmount + betIncrement <= chipCount) {
