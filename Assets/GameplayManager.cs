@@ -15,7 +15,8 @@ public class GameplayManager : MonoBehaviour
     GameObject instantiatedGame;
 
     const byte BET_MADE = 1;
-    const byte NEW_SPIN = 2; 
+    const byte NEW_SPIN = 2;
+    const byte CHIP_UPDATE = 3;
 
     int numOfPlayersBetted = 0;
 
@@ -28,7 +29,7 @@ public class GameplayManager : MonoBehaviour
 
     //public event Action<GameState> OnGameStateChange;
     public event Action<int> OnPlayerBet;
-
+    public event Action<int, int, bool> OnOpponentUpdate;
     public event Action<bool> OnNewSpin;
     public event Action<bool, int, bool> OnRoundEnd;
 
@@ -61,12 +62,13 @@ public class GameplayManager : MonoBehaviour
         OnPlayerBet?.Invoke(betAmount);
 
         numOfPlayersBetted++;
-        object[] data = new object[] { betAmount, leftChips };
+        object[] data = new object[] { betAmount, leftChips, isBetGreen };
         PhotonNetwork.RaiseEvent(BET_MADE, data, Photon.Realtime.RaiseEventOptions.Default, ExitGames.Client.Photon.SendOptions.SendReliable);
         CheckReadyToSpin();
     }
 
-    void OnOtherBetSelected(int betAmount, int leftChips) {
+    void OnOtherBetSelected(int betAmount, int leftChips, bool isGreen) {
+        OnOpponentUpdate?.Invoke(betAmount, leftChips, isGreen);
         numOfPlayersBetted++;
         CheckReadyToSpin();
     }
@@ -98,6 +100,9 @@ public class GameplayManager : MonoBehaviour
 
         numOfPlayersBetted = 0;
         OnRoundEnd?.Invoke(isWin, totalChips, isToppingPlayerUp);
+
+        object[] data = new object[] { totalChips };
+        PhotonNetwork.RaiseEvent(CHIP_UPDATE, data, Photon.Realtime.RaiseEventOptions.Default, ExitGames.Client.Photon.SendOptions.SendReliable);
     }
 
 
@@ -109,11 +114,16 @@ public class GameplayManager : MonoBehaviour
             case BET_MADE:
                 int betAmount = (int)data[0];
                 int leftChips = (int)data[1];
-                OnOtherBetSelected(betAmount, leftChips);
+                bool isOpponentBetGreen = (bool)data[2];
+                OnOtherBetSelected(betAmount, leftChips, isOpponentBetGreen);
                 break;
             case NEW_SPIN:
                 isCurrentRoundGreen = (bool)data[0];
                 OnNewSpin?.Invoke(isCurrentRoundGreen);
+                break;
+            case CHIP_UPDATE:
+                int chipCount = (int)data[0];
+                OnOpponentUpdate?.Invoke(0, chipCount, true);
                 break;
             default:
                 break;
