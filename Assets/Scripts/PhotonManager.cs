@@ -61,13 +61,17 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         }
     }
 
+    public override void OnCreatedRoom() {
+        base.OnCreatedRoom();
+    }
+
     void UpdateNetworkStatus(NetworkStatus newStatus) {
         networkStatus = newStatus;
         OnNetworkStatusChange?.Invoke(newStatus);
     }
 
     public void FindRandomMatch() {
-        PhotonNetwork.JoinRandomOrCreateRoom();
+        PhotonNetwork.JoinRandomOrCreateRoom(null, 0, MatchmakingMode.FillRoom, null, null, "Random Game");
     }
 
     public void StartHosting(string roomName) {
@@ -77,6 +81,16 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     public void LeaveRoomIfInRoom() {
         if (PhotonNetwork.InRoom) {
             PhotonNetwork.LeaveRoom();
+        }
+    }
+
+    public void JoinLobby() {
+        PhotonNetwork.JoinLobby();
+    }
+
+    public void LeaveLobbyIfInLobby() {
+        if (PhotonNetwork.InLobby) {
+            PhotonNetwork.LeaveLobby();
         }
     }
 }
