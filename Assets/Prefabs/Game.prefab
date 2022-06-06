@@ -816,6 +816,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2884488577779092399}
   - component: {fileID: 959076530656251852}
+  - component: {fileID: 5983559673792051367}
   m_Layer: 0
   m_Name: Game
   m_TagString: Untagged
@@ -854,8 +855,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f657fff9b2ec15c418226168bf1eae97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chipStackPrefab: {fileID: 3789794606370695699, guid: aa7e36e4e3df90846bd7c9f6f7c9b0db,
-    type: 3}
+  chipStackPooler: {fileID: 5983559673792051367}
   playerChipStacksList:
   - {fileID: 4456538339127503994}
   - {fileID: 5203773876983722612}
@@ -869,6 +869,20 @@ MonoBehaviour:
   - {fileID: 3568949216174874261}
   playerStacksStartPos: {fileID: 9075224251440666845}
   betAreaStartPos: {fileID: 2271078178311435862}
+--- !u!114 &5983559673792051367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2884488577779092398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36b6be628002cdb4eb572524046ce795, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chipStackPrefab: {fileID: 3789794606370695699, guid: aa7e36e4e3df90846bd7c9f6f7c9b0db,
+    type: 3}
 --- !u!1 &2884488577805990619
 GameObject:
   m_ObjectHideFlags: 0

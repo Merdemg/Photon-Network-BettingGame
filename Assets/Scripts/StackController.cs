@@ -4,10 +4,7 @@ using UnityEngine;
 
 public class StackController : MonoBehaviour
 {
-    [SerializeField] ChipStack chipStackPrefab = null;
-    //[SerializeField] ChipStack[] playerChipStack;
-    //[SerializeField] ChipStack[] betAreaChipStack;
-
+    [SerializeField] ChipStackPooler chipStackPooler;
     [SerializeField] List<ChipStack> playerChipStacksList;
 
     Stack<ChipStack> playerChipStacks = new Stack<ChipStack>();
@@ -36,9 +33,8 @@ public class StackController : MonoBehaviour
         int numOfStacks = betAmount / 10;
 
         for (int i = 0; i < numOfStacks; i++) {
-            ChipStack stack = playerChipStacks.Peek();
+            ChipStack stack = playerChipStacks.Pop();
             MoveStackToBetArea(stack);
-            playerChipStacks.Pop();
         }
     }
 
@@ -59,13 +55,12 @@ public class StackController : MonoBehaviour
         int betStackCount = betAreaChipStacks.Count;
 
         for (int i = 0; i < betStackCount; i++) {
-            ChipStack stack = betAreaChipStacks.Peek();
+            ChipStack stack = betAreaChipStacks.Pop();
             MoveStackToPlayerArea(stack);
-            betAreaChipStacks.Pop();
         }
 
         for (int i = 0; i < betStackCount; i++) {
-            ChipStack stack = GameObject.Instantiate(chipStackPrefab, transform);
+            ChipStack stack = chipStackPooler.GetAStack(transform);
             MoveStackToPlayerArea(stack);
         }
     }
@@ -73,15 +68,14 @@ public class StackController : MonoBehaviour
     void MoveChipsForPlayerLose() {
         int count = betAreaChipStacks.Count;
         for (int i = 0; i < count; i++) {
-            ChipStack stack = betAreaChipStacks.Peek();
-            betAreaChipStacks.Pop();
-            Destroy(stack.gameObject);
+            ChipStack stack = betAreaChipStacks.Pop();
+            chipStackPooler.ReturnToPool(stack);
         }
     }
 
     void TopPlayerUp(int totalChips) {
         while (playerChipStacks.Count < totalChips / 10) {
-            ChipStack stack = GameObject.Instantiate(chipStackPrefab, transform);
+            ChipStack stack = chipStackPooler.GetAStack(transform);
             MoveStackToPlayerArea(stack);
         }
     }
