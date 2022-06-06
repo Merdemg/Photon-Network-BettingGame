@@ -7,6 +7,8 @@ public class MainMenu : MonoBehaviour
 {
     [SerializeField] GameObject connectingView = null;
     [SerializeField] GameObject gameTypeSelectionView = null;
+    [SerializeField] GameObject hostView = null;
+    [SerializeField] GameObject waitingForPlayerView = null;
 
     Canvas canvas;
 
@@ -30,19 +32,26 @@ public class MainMenu : MonoBehaviour
             case PhotonManager.NetworkStatus.Disconnected:
                 connectingView.SetActive(true);
                 gameTypeSelectionView.SetActive(false);
+                waitingForPlayerView.SetActive(false);
+                hostView.SetActive(false);
                 break;
             case PhotonManager.NetworkStatus.ConnectedToPhotonServers:
                 connectingView.SetActive(false);
                 gameTypeSelectionView.SetActive(true);
+                waitingForPlayerView.SetActive(false);
+                hostView.SetActive(false);
                 break;
             case PhotonManager.NetworkStatus.JoinedRoom:
                 connectingView.SetActive(false);
                 gameTypeSelectionView.SetActive(false);
+                waitingForPlayerView.SetActive(true);
+                hostView.SetActive(false);
                 break;
             default:
                 break;
         }
     }
+
     private void OnReadyForNewGame() {
         canvas.enabled = false;
     }
@@ -50,5 +59,9 @@ public class MainMenu : MonoBehaviour
     // UI Button calls
     public void OnRandomGameSelected() {
         PhotonManager.Instance.FindRandomMatch();
+    }
+
+    public void OnBackButton() {
+        PhotonManager.Instance.LeaveRoomIfInRoom();
     }
 }

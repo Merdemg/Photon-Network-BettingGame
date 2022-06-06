@@ -51,6 +51,11 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         }
     }
 
+    public override void OnCreatedRoom() {
+        base.OnCreatedRoom();
+        UpdateNetworkStatus(NetworkStatus.JoinedRoom);
+    }
+
     public override void OnPlayerEnteredRoom(Player newPlayer) {
         base.OnPlayerEnteredRoom(newPlayer);
 
@@ -59,10 +64,6 @@ public class PhotonManager : MonoBehaviourPunCallbacks
             PhotonNetwork.CurrentRoom.IsOpen = false;
             OnReadyForNewGame?.Invoke();
         }
-    }
-
-    public override void OnCreatedRoom() {
-        base.OnCreatedRoom();
     }
 
     void UpdateNetworkStatus(NetworkStatus newStatus) {
