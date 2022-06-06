@@ -55,9 +55,9 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         base.OnPlayerEnteredRoom(newPlayer);
 
         if (PhotonNetwork.CurrentRoom.PlayerCount == playerCountNeeded) {
-            PhotonNetwork.CurrentRoom.IsVisible = false; //So can not rejoin, called by host (player already in room)
+            PhotonNetwork.CurrentRoom.IsVisible = false;
             PhotonNetwork.CurrentRoom.IsOpen = false;
-            OnReadyForNewGame?.Invoke(); //NOTE: this will not be called on the more recent player who has joined
+            OnReadyForNewGame?.Invoke();
         }
     }
 
@@ -68,5 +68,15 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
     public void FindRandomMatch() {
         PhotonNetwork.JoinRandomOrCreateRoom();
+    }
+
+    public void StartHosting(string roomName) {
+        PhotonNetwork.CreateRoom(roomName);
+    }
+
+    public void LeaveRoomIfInRoom() {
+        if (PhotonNetwork.InRoom) {
+            PhotonNetwork.LeaveRoom();
+        }
     }
 }
